@@ -58,7 +58,7 @@ for page_data in pages:
         date, local_file, likes_count = meme
         image_file = os.path.join('twitter_data', 'memes', local_file)
         if os.path.exists(image_file):
-            img = Image(image_file, width=2*inch, height=2*inch)  # Adjust image size here
+            img = Image(image_file, width=1.5*inch, height=1.5*inch)  # Adjust image size here
             img.hAlign = 'CENTER'
             table_data.append([img])
             table_data.append([date])
