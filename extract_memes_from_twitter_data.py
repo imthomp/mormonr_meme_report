@@ -4,6 +4,7 @@ import requests
 import json
 import zipfile
 import shutil
+import pytz
 from datetime import datetime
 
 destination_directory = 'twitter_data'
@@ -56,7 +57,7 @@ with open(tweets_js_path, 'r', encoding='utf-8') as f:
     try:
         tweets = json.loads(json_content)
         # For testing purposes, uncomment the next line to process only the first 10 tweets
-        # tweets = tweets[:10]
+        tweets = tweets[:100]
     except json.JSONDecodeError as e:
         print(f"Error occurred while parsing JSON. Details: {e}")
         print(f"Content leading to error:\n{json_content[:1000]}...")  # Print the first 1000 characters
@@ -70,8 +71,14 @@ for tweet in tweets:
         likes_count = tweet['tweet'].get('favorite_count', 0)
 
         if media:
+            # Convert UTC date to Mountain Time (MT) and format it
+            utc_date = datetime.strptime(date, "%a %b %d %H:%M:%S %z %Y")
+            mt_timezone = pytz.timezone('US/Mountain')
+            mt_date = utc_date.astimezone(mt_timezone)
+            formatted_date = mt_date.strftime("%Y-%m-%d %I:%M %p %Z")
+            
             meme_url = media[0]['media_url_https']
-            sanitized_date = date.replace(":", "_").replace(" ", "_")
+            sanitized_date = formatted_date.replace(":", "_").replace(" ", "_")
             local_file = os.path.join(meme_directory, f"{sanitized_date}.png")
             
             response = requests.get(meme_url)
@@ -80,13 +87,13 @@ for tweet in tweets:
             
             cursor.execute(
                 "INSERT INTO memes (date, local_file, likes_count) VALUES (?, ?, ?)", 
-                (date, os.path.basename(local_file), likes_count)
+                (formatted_date, os.path.basename(local_file), likes_count)
             )
             conn.commit()
-            print(f"Processed tweet from {date}")
+            print(f"Processed tweet from {formatted_date}")
 
     except Exception as e:
-        print(f"Error processing tweet from {date}. Error: {e}")
+        print(f"Error processing tweet from {formatted_date}. Error: {e}")
 
 # Cleanup
 os.remove(tweets_js_path)
