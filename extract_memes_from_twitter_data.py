@@ -57,7 +57,7 @@ with open(tweets_js_path, 'r', encoding='utf-8') as f:
     try:
         tweets = json.loads(json_content)
         # For testing purposes, uncomment the next line to process only the first 10 tweets
-        tweets = tweets[:100]
+        # tweets = tweets[:100]
     except json.JSONDecodeError as e:
         print(f"Error occurred while parsing JSON. Details: {e}")
         print(f"Content leading to error:\n{json_content[:1000]}...")  # Print the first 1000 characters
