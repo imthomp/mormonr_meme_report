@@ -1,4 +1,3 @@
-import os
 # main.py
 
 # Execute the first script: extract_memes_from_twitter_data.py
