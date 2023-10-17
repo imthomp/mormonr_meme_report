@@ -9,7 +9,7 @@ from datetime import datetime
 
 destination_directory = 'twitter_data'
 meme_directory = os.path.join(destination_directory, 'memes')
-path_to_zip_file = 'twitter-2023-10-11-3d617ff4033ccc334de0e457100148d7791fe92f3733a151eb93fcd60fcb1c34.zip'
+path_to_zip_file = './twitter-2023-10-11-3d617ff4033ccc334de0e457100148d7791fe92f3733a151eb93fcd60fcb1c34.zip'
 
 # Create SQLite database and table
 conn = sqlite3.connect('memes.db')
@@ -75,7 +75,8 @@ for tweet in tweets:
             utc_date = datetime.strptime(date, "%a %b %d %H:%M:%S %z %Y")
             mt_timezone = pytz.timezone('US/Mountain')
             mt_date = utc_date.astimezone(mt_timezone)
-            formatted_date = mt_date.strftime("%Y-%m-%d %I:%M %p %Z")
+            # formatted_date = mt_date.strftime("%Y-%m-%d %I:%M %p %Z")
+            formatted_date = mt_date.strftime("%B %d, %Y")
             
             meme_url = media[0]['media_url_https']
             sanitized_date = formatted_date.replace(":", "_").replace(" ", "_")
