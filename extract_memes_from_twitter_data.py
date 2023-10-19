@@ -1,3 +1,5 @@
+## extract_memes_from_twitter_data.py
+
 import sqlite3
 import os
 import requests
@@ -23,10 +25,22 @@ def init_database():
     ''')
     return conn, cursor
 
+def remove_directory(path):
+    if os.path.exists(path):
+        for root, dirs, files in os.walk(path, topdown=False):
+            for name in files:
+                os.remove(os.path.join(root, name))
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
+        os.rmdir(path)
+
 def ensure_directories():
+    # Remove the directory if it already exists
+    remove_directory(destination_directory)
+
+    # Recreate the directories
     for dir_path in [destination_directory, meme_directory]:
-        if not os.path.exists(dir_path):
-            os.makedirs(dir_path)
+        os.makedirs(dir_path)
 
 def extract_tweets(path_to_zip_file):
     extracted_tweets_path = 'data/tweets.js'
@@ -78,7 +92,7 @@ def main():
     conn, cursor = init_database()
     tweets = extract_tweets(path_to_zip_file)
     # testing
-    # tweets = tweets[:50]
+    tweets = tweets[:100]
 
     for tweet in tweets:
         process_tweet(tweet, cursor)

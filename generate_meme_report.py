@@ -1,3 +1,5 @@
+## generate_meme_report.py
+
 import os
 import sqlite3
 from reportlab.lib.pagesizes import letter

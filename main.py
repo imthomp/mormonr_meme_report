@@ -1,4 +1,4 @@
-# main.py
+## main.py
 
 # Execute the first script: extract_memes_from_twitter_data.py
 exec(open("extract_memes_from_twitter_data.py").read())
