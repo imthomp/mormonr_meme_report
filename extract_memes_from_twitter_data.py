@@ -92,7 +92,7 @@ def main():
     conn, cursor = init_database()
     tweets = extract_tweets(path_to_zip_file)
     # testing
-    tweets = tweets[:100]
+    # tweets = tweets[:100]
 
     for tweet in tweets:
         process_tweet(tweet, cursor)
